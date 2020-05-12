@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Details</title>
+    <script>
+        function onSubmitFunc(){
+
+           console.log("submitted");
+           let ajaxReq=new XMLHttpRequest();
+           ajaxReq.onreadystatechange=function(){
+                if(this.readyState==4 && this.status==200){
+<!--                  alert("successful");-->
+                   console.log("got response");
+                   console.log(document.getElementById("responseData"));
+                   document.getElementById("responseData").innerHTML="<h1>good</h1>"
+                }
+                else if(this.readyState in [1,2,3]){
+<!--                   alert("request received");-->
+                       console.log("Please wait for Response");
+
+                }
+                else{
+                   console.log("readstate: "+this.readyState);
+
+                }
+           }
+           queryString="/getSellerData?sellerId="+document.getElementById("sellerId").value+"&noOfMonths="+document.getElementById("noOfMonths").value;
+           console.log(queryString);
+           ajaxReq.open("GET", queryString,true )
+           ajaxReq.send();
+
+
+        }
+    </script>
+
+</head>
+<body>
+<div id="inputData" align="centre">
+    <form action="/getSellerData" method="get" id="getSellerData"  >
+        <label for="sellerId">sellerID</label>
+        <input type="text" id="sellerId"/><br><br>
+        <label for="noOfMonths">Num Of Months</label>
+        <select id="noOfMonths" name="noOfMonths">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="6">6</option>
+            <option value="12">12</option>
+        </select><br>
+        <input type="button" value="Go" onclick="onSubmitFunc()"><br>
+
+    </form>
+
+</div>
+<div id="responseData" align="centre" >
+   <h2>badd</h2>
+</div>
+</body>
+</html>
