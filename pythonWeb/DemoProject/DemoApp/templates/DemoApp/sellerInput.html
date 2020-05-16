@@ -3,8 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Seller Details</title>
+    <style>
+        input[type=text], select{
+        width:50%;
+        padding:12px 20px;
+        margin:8px 0;
+        display:inline-block;
+        border:1px solid #ccc;
+        border-radius:border-box;
+        }
+
+        input[type=submit],input[type=button]{
+        width:20%;
+        background-color:#4CAF50;
+        color:white;
+        padding:4px 10px;
+        margin:8px 100px;
+        border:none;
+        border-radius:4px;
+        curser:pointer;
+        }
+
+        input[type=button]:hover{
+        background-color:#250040;
+        }
+
+        div{
+        border-radius:5px;
+        background-color:#f2f2f2;
+        padding: 40px;
+        width:50%;
+        margin:100px 300px
+        }
+
+    </style>
+
     <script>
-        function onSubmitFunc(){
+        function onSubmitFunc(element){
 
            console.log("submitted");
            let ajaxReq=new XMLHttpRequest();
@@ -13,15 +48,21 @@
 <!--                  alert("successful");-->
                    console.log("got response");
                    console.log(document.getElementById("responseData"));
-                   document.getElementById("responseData").innerHTML="<h1>good</h1>"
+
+                   element.disabled=false;
+                   document.getElementById("responseData").innerHTML="<h3><a target=\"_blank\" href=\"https://docs.google.com/spreadsheets/d/1vDFOEMaT9ggfNusWTGEO_nRzQkh8dzO9tcbKZW6qDnQ/edit#gid=1654357264\" >Response@G Sheet</a><h3>";
                 }
+
                 else if(this.readyState in [1,2,3]){
 <!--                   alert("request received");-->
                        console.log("Please wait for Response");
+                        element.disabled=true;
+                       document.getElementById("responseData").innerHTML="<h1>Submitted Request. Pls Wait</h1>"
 
                 }
                 else{
-                   console.log("readstate: "+this.readyState);
+                    document.getElementById("responseData").innerHTML="<h1>"+this.responseText+"</h1>";
+                    element.disabled=false;
 
                 }
            }
@@ -47,13 +88,13 @@
             <option value="6">6</option>
             <option value="12">12</option>
         </select><br>
-        <input type="button" value="Go" onclick="onSubmitFunc()"><br>
+        <input type="button" value="Search" onclick="onSubmitFunc(this)"><br>
 
     </form>
 
 </div>
 <div id="responseData" align="centre" >
-   <h2>badd</h2>
+   <h2></h2>
 </div>
 </body>
 </html>
