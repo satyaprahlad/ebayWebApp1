@@ -1,0 +1,32 @@
+{
+        "itemFilter": {
+            "name": "Seller",
+            "value": ""
+        },
+        "OutputSelector": [
+            "Title",
+            "itemId",
+            "ViewItemURL",
+            "SellingStatus",
+            "ListingDuration",
+            "listingInfo"
+            "StartTime",
+            "EndTime",
+            "WatchCount",
+            "ItemsPerPage",
+            "PrimaryCategory",
+            "HasMoreItems",
+            "PageNumber",
+            "ReturnedItemCountActual",
+            "PaginationResult"
+        ],
+        "StartTimeFrom": "",
+        "StartTimeTo": "",
+        "IncludeWatchCount": "true",
+
+        "paginationInput": {
+            "entriesPerPage": "100",
+            "pageNumber": "0"
+
+        }
+    }

@@ -5,12 +5,13 @@
     <title>Seller Details</title>
     <style>
         input[type=text], select{
-        width:50%;
+        width:40%;
         padding:12px 20px;
-        margin:8px 0;
+        margin:8px 0px;
         display:inline-block;
         border:1px solid #ccc;
         border-radius:border-box;
+        float:left;
         }
 
         input[type=submit],input[type=button]{
@@ -18,7 +19,7 @@
         background-color:#4CAF50;
         color:white;
         padding:4px 10px;
-        margin:8px 100px;
+        margin:8px 185px;
         border:none;
         border-radius:4px;
         curser:pointer;
@@ -29,11 +30,27 @@
         }
 
         div{
-        border-radius:5px;
+        border-radius:20px;
         background-color:#f2f2f2;
         padding: 40px;
-        width:50%;
-        margin:100px 300px
+        width:30%;
+        margin:200px 500px;
+
+        }
+
+        div[id="responseData"]{
+        border-radius:5px;
+        background-color:#f2f2f2;
+        padding:    10px;
+        width:100%;
+        margin:10px 0px;
+
+        }
+
+        .labels{
+          float:left;
+          width:30%;
+          margin:8px 10px;
         }
 
     </style>
@@ -79,9 +96,9 @@
 <body>
 <div id="inputData" align="centre">
     <form action="/getSellerData" method="get" id="getSellerData"  >
-        <label for="sellerId">sellerID</label>
+        <label class="labels" for="sellerId">sellerID</label>
         <input type="text" id="sellerId"/><br><br>
-        <label for="noOfMonths">Num Of Months</label>
+        <label for="noOfMonths" class="labels">Num Of Months</label>
         <select id="noOfMonths" name="noOfMonths">
             <option value="1">1</option>
             <option value="3">3</option>
@@ -92,9 +109,11 @@
 
     </form>
 
-</div>
-<div id="responseData" align="centre" >
+    <div id="responseData" align="centre" >
    <h2></h2>
 </div>
+
+</div>
+
 </body>
 </html>

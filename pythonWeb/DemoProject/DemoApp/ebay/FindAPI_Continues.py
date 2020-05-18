@@ -26,7 +26,7 @@ rotateHandler=logging.handlers.RotatingFileHandler(filename="FindAPI.log",maxByt
 logger=logging.getLogger(__name__)
 logger.addHandler(rotateHandler)
 
-def updateToGSheet(data ,error=None,sellerIdFromSheet="",noOfMonths="0"):
+def __updateToGSheet(data ,error=None,sellerIdFromSheet="",noOfMonths="0"):
     scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
              "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
     creds = ServiceAccountCredentials.from_json_keyfile_name("resources/oAuth_gdrive.json", scope)
@@ -97,7 +97,7 @@ def updateToGSheet(data ,error=None,sellerIdFromSheet="",noOfMonths="0"):
     inputSheet.update_cell(4,2,"")
     # clearing input value so that script will not process repeatedly.
 
-def get_session():
+def __get_session():
     if not hasattr(thread_local, "api"):
         thread_local.api = Shopping(config_file=None, domain='open.api.ebay.com',
                                     appid="SatyaPra-MyEBPrac-PRD-abce464fb-dd2ae5fe",
@@ -107,9 +107,8 @@ def get_session():
     return thread_local.api
 
 
-
 thread_local_FindingApi_Session=threading.local()
-def getFindingApiSession():
+def __getFindingApiSession():
     if not hasattr(thread_local_FindingApi_Session,"api"):
         thread_local_FindingApi_Session.api=Finding(config_file=None, domain='svcs.ebay.com', appid="SatyaPra-MyEBPrac-PRD-abce464fb-dd2ae5fe",
                   devid="6c042b69-e90f-4897-9045-060858248665",
@@ -118,7 +117,7 @@ def getFindingApiSession():
     return thread_local_FindingApi_Session.api
 
 def retrieveFromSecondPage(inputObj):
-    api=getFindingApiSession()
+    api=__getFindingApiSession()
     response = api.execute('findItemsAdvanced', inputObj).dict()
     #logger.debug(f" thread name {threading.currentThread().name } result is : {response}")
     return response
@@ -126,44 +125,10 @@ def retrieveFromSecondPage(inputObj):
 
 
 def ebayFunction(userInput):
-    api = getFindingApiSession()
+    api = __getFindingApiSession()
 
     items = list()
-
-    inputObj = {
-        "itemFilter": {
-            "name": "Seller",
-            "value": ""
-        },
-        "OutputSelector": [
-            "Title",
-            "itemId",
-            "ViewItemURL",
-            "SellingStatus",
-            "ListingDuration",
-            "listingInfo"
-            "StartTime",
-            "EndTime",
-            "WatchCount",
-            "ItemsPerPage",
-            "PrimaryCategory",
-            "HasMoreItems",
-            "PageNumber",
-            "ReturnedItemCountActual",
-            "PaginationResult"
-        ],
-        "StartTimeFrom": "",
-        "StartTimeTo": "",
-        "IncludeWatchCount": "true",
-
-        "paginationInput": {
-            "entriesPerPage": "100",
-            "pageNumber": "0"
-
-        }
-    }
-
-    #print(userInput)
+    inputObj= eval(open("resources/FindingJSON.json","r").read())
     startDateTo = datetime.datetime.now()
     startDateFrom = startDateTo - datetime.timedelta(15)
     sellerId=userInput["sellerId"]
@@ -218,13 +183,13 @@ def ebayFunction(userInput):
         toc=time.perf_counter()
         logger.info(f"search took {toc-tic} time with items: {len(items)}")
         logger.info("now adding details like hit count and quantity sold")
-        items=getGood(items)
+        items=__getGood(items)
 
-        updateToGSheet(items, None, sellerId, noOfMonths)
+        __updateToGSheet(items, None, sellerId, noOfMonths)
         logger.info("completed")
 
 
-def getGood(items):
+def __getGood(items):
     logger.info("shopping")
     itemIdSet = set(map(lambda x: x['itemId'], items))
     noDuplicates = list()
@@ -257,7 +222,7 @@ def getGood(items):
             j = _ + 20
         inputObj["ItemID"] = list(map(lambda x: x['itemId'], items[_:j]))
         try:
-            response = get_session().execute('GetMultipleItems', inputObj).dict()
+            response = __get_session().execute('GetMultipleItems', inputObj).dict()
         except ConnectionError as err:
             logger.info("got exception while getmultipleitems",exc_info=True)
             print("exception at connection",err)
@@ -288,5 +253,3 @@ def getGood(items):
     logger.info(f"stopwatch: {toc-tic}")
     #logger.debug(f"lengthof input {len(inputObjects)}")
     return items
-
-
