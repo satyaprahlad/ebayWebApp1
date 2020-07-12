@@ -8,6 +8,11 @@ from .ebay import  FindAPI_Continues
 def hi(request):
     return render(request,'DemoApp/home1.html')
 
+def googlescrape(request):
+    sellerId = str(request.GET['domain']).strip()
+    noOfMonths = str(request.GET['query'])
+    return []
+
 def bye(request):
     mydict=dict()
     mydict['name1']='satya'
@@ -20,9 +25,7 @@ def homePage(request):
     return render(request,'DemoApp/sellerInput.html')
 
 def sellerSearch(request):
-
     inputs=dict()
-
     sellerId=str(request.GET['sellerId']).strip()
     noOfMonths=int(request.GET['noOfMonths'])
     print(f"request parameters are {sellerId} and {noOfMonths}")

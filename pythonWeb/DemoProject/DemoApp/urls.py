@@ -9,4 +9,5 @@ urlpatterns = [
     path('bye',views.bye, name='bye-page'),
     path('getSellerData',views.sellerSearch, name='sellerSearch1'),
     path('',views.homePage, name='sellerInput'),
+    path('googlescrape', views.googlescrape,name='googlescrape')
 ]
