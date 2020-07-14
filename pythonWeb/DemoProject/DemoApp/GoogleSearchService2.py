@@ -25,7 +25,13 @@ def _scrapPage(item):
     item2['scarpe']=result
     return item2
 
-def scrapeGoogle(query,googleDomain):
+def __scrapeGoogle(query,googleDomain):
+    results= list(__scrapeGoogle(query, googleDomain))
+    final = dict()
+    final["searchResults"] = results
+    return JsonResponse(final, safe=False)
+
+def __scrapeGoogle(query,googleDomain):
     query = query.replace(' ', '+')
     URL = f"https://www."+googleDomain+"/search?q="+query
     # desktop user-agent
@@ -50,10 +56,6 @@ def scrapeGoogle(query,googleDomain):
                 }
                 items.append(item)
 
-    #tic = time.perf_counter()
-    results=[]
-    #print(links)
-    #print(titles)
     with concurrent.futures.ThreadPoolExecutor(5) as executor:
         results = [executor.submit(_scrapPage, item) for item in items]
         for future in results:
@@ -61,12 +63,10 @@ def scrapeGoogle(query,googleDomain):
                 yield future.result()
             except:
                 traceback.print_exc()
-    final = dict()
-    final["searchResults"]= results
-    return final
+
 
 tic=time();
-resp = scrapeGoogle(query="how to eat",googleDomain="google.com" )
+resp = __scrapeGoogle(query="how to eat",googleDomain="google.com" )
 resp=list(resp)
 #print(resp)
 print(len(resp))
