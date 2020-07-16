@@ -114,5 +114,3 @@ def __scrapeGoogle(query,googleDomain):
 # toc=time()
 # print(" tic {tic} and toc {toc} and diff {tik}",tic,toc,toc-tic)
 #
-x=replaceWasteChars("ewerbung schreiben: HÃ¤ufige Fehler im Bewerbungsschreiben")
-print(x)
