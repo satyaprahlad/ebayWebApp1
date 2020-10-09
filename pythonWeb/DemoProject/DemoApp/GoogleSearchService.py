@@ -45,7 +45,7 @@ def __scrapeGoogle(query,googleDomain):
     links = []
     titles=[]
     items=[]
-    for g in soup.find_all('div', class_='r'):
+    for g in soup.find_all('div', class_='rc'):
         anchors = g.find_all('a')
         if anchors:
             link = anchors[0]['href']
